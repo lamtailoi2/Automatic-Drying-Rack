@@ -85,9 +85,16 @@ void loop() {
   delay(1000); // 1 second delay
 }
 
-bool isWithinDryingTime(DateTime now) {
-  int nowMins   = now.hour() * 60 + now.minute();
+bool isWithinDryingTime(int nowHour, int nowMinute) {
+  int nowMins = nowHour * 60 + nowMinute;
   int startMins = dryingStartHour * 60 + dryingStartMinute;
-  int endMins   = dryingEndHour * 60 + dryingEndMinute;
-  return (nowMins >= startMins) && (nowMins < endMins);
+  int endMins   = dryingEndHour   * 60 + dryingEndMinute;
+  if (startMins < endMins) {
+    // Current day
+    return (nowMins >= startMins) && (nowMins < endMins);
+    
+  } else { 
+    // Next day
+    return (nowMins >= startMins) || (nowMins < endMins);
+  }
 }
